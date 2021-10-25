@@ -5,7 +5,7 @@ import javax.sound.sampled.SourceDataLine;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
+
 
 public class piskvorky{
 
@@ -21,26 +21,21 @@ public class piskvorky{
        printgameBoard(gameBoard);
        while(true) {
         Scanner sc = new Scanner(System.in);
-        System.out.println("Zadej cislo policka ktere chces zabrat(1-9):");
+        System.out.println("(X)Zadej cislo policka ktere chces zabrat(1-9):");
         int playerPos = sc.nextInt();
-        while(playerPositions.contains(playerPos) || cpuPositions.contains(playerPos)) {
-            System.out.println("Policko je zabrano! Zadej nezadane policko!");
-            playerPos = sc.nextInt();
-        }
-        PlacePiece(gameBoard, playerPos, "player");
+        
+        PlacePiece(gameBoard, playerPos, "player1");
         String result = checkWinner();
         if(result.length()> 0) {
             System.out.println(result);
             printgameBoard(gameBoard);
             break;
         }
-        Random rand = new Random();
-        int cpuPos = rand.nextInt(9) + 1;
-        PlacePiece(gameBoard, cpuPos, "cpu");
-        while(playerPositions.contains(cpuPos) || cpuPositions.contains(cpuPos)) {
-            cpuPos = rand.nextInt(9) + 1;
-        }
-        PlacePiece(gameBoard, cpuPos, "cpu");
+        printgameBoard(gameBoard);
+        System.out.println("(O)Zadej cislo policka ktere chces zabrat(1-9):");
+         int cpuPos = sc.nextInt();
+        PlacePiece(gameBoard, cpuPos, "player2");
+        
         printgameBoard(gameBoard);
 
         result = checkWinner();
@@ -63,10 +58,10 @@ private static void printgameBoard(char[][] gameBoard) {
 }
 public static void PlacePiece(char[][] gameBoard, int pos, String user) {
     char symbol = ' ';
-    if(user.equals("player")) {
+    if(user.equals("player1")) {
         symbol = 'X';
         playerPositions.add(pos);
-    } else if (user.equals("cpu")){
+    } else if (user.equals("player2")){
         symbol = 'O';
         cpuPositions.add(pos);
     }
@@ -126,9 +121,9 @@ private static String checkWinner() {
     
     for (List l : winning) 
         if(playerPositions.containsAll(l)) {
-            return "Vyhrali jste!";
+            return "Vyhral Player1!";
         } else if(cpuPositions.containsAll(l)) {
-            return "Prohrali jste!";
+            return "Vyhral Player2!";
         } else if(playerPositions.size()+ cpuPositions.size() == 9){
             return "Vsechna policka jsou zabrana! Nikdo nevyhral!";
         }
